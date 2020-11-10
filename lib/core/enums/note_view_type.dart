@@ -1,0 +1,4 @@
+
+enum NotesViewType{
+  Grid, List
+}
