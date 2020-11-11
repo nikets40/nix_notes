@@ -1,4 +1,4 @@
-# nix_notes
+# Stiky Notes
 
 A Simple Notes app with cloud syncing your notes with the linked account
 
