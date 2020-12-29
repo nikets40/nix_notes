@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nix_notes/core/services/auth_service.dart';
+import 'package:nix_notes/core/services/url_launcher_service.dart';
 import 'package:nix_notes/ui/screens/home_screen.dart';
+import 'package:nix_notes/ui/widgets/facebook_login_button.dart';
+import 'package:nix_notes/ui/widgets/google_login_button.dart';
 import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -39,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           color: Colors.red,
                           borderRadius: BorderRadius.circular(20),
                           image: DecorationImage(
-                              image: AssetImage('assets/logo/logo.png'))),
+                              image: AssetImage('assets/logo/logo.png'),fit: BoxFit.fill)),
                     ),
                     SizedBox(height: 20,),
                     RichText(
@@ -94,63 +98,11 @@ class LoginPanel extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    onPressed: AuthService.instance.signInWithGoogle,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 5),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/google_icon.png",
-                            height: 24,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              "Continue with Google",
-                              textScaleFactor: 1.4,
-                              style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6)),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  GoogleLoginButton(),
                   SizedBox(
                     height: 10,
                   ),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    onPressed: AuthService.instance.signInWithFacebook,
-                    color: Color(0xff1778F2),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 5),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "assets/images/facebook_icon.png",
-                            height: 24,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20.0),
-                            child: Text(
-                              "Continue with Facebook",
-                              textScaleFactor: 1.4,
-                              style: TextStyle(
-                                  color: Colors.white.withOpacity(0.9)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // FacebookLoginButton(),
                   SizedBox(
                     height: 25,
                   ),
@@ -161,6 +113,10 @@ class LoginPanel extends StatelessWidget {
                       style: TextStyle(color: Colors.white.withOpacity(0.6)),
                       children: <TextSpan>[
                         TextSpan(
+                          recognizer: new TapGestureRecognizer()
+                            ..onTap=(){
+                            UrlService.instance.openTermsAndConditions();
+                            },
                             text: 'terms and conditions',
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
@@ -168,6 +124,10 @@ class LoginPanel extends StatelessWidget {
                         TextSpan(text: ' and '),
                         TextSpan(
                             text: 'privacy policy',
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap=(){
+                                UrlService.instance.openPrivacyPolicy();
+                              },
                             style: TextStyle(
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.bold)),

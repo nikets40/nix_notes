@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nix_notes/core/models/notes_model.dart';
 import 'package:nix_notes/core/services/db_service.dart';
 import 'package:nix_notes/ui/widgets/add_note_button.dart';
@@ -126,21 +127,38 @@ class _HomeViewState extends State<HomeView>
           duration: Duration(milliseconds: 300),
         ),
         actions: [
+          if(notes.length>0)
           IconButton(
+            disabledColor: Colors.white.withOpacity(0.3),
             icon:
                 Icon(showSearch ? Icons.close_rounded : Icons.search_outlined),
-            onPressed: () {
+            onPressed:  (){
               setState(() {
                 showSearch = !showSearch;
                 if (!showSearch) widget.searchController.clear();
               });
-            },
+            }
           ),
         ],
       ),
       drawer: DrawerMenu(),
       floatingActionButton: widget.location == "Notes" ? AddNoteButton() : null,
-      body: SingleChildScrollView(
+      extendBodyBehindAppBar:(notes.length==0)?true:false,
+      body: (notes.length==0)?
+     Center(
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset("assets/images/box.svg",height: 200,),
+            SizedBox(height: 30,),
+            Text(showSearch?"No results Found!":"Your ${widget.location} tab is Empty!",style: TextStyle(fontSize: 30, color: Colors.white,fontWeight: FontWeight.w600),)
+          ],
+        ),
+      ),
+    ):
+
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: NotesListView(

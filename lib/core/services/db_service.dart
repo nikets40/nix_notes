@@ -37,7 +37,9 @@ class DBService{
       else return false;
     }
     catch(e){
-      log(e);
+      log(e.toString());
+      print(e.toString());
+      return false;
     }
 
   }
